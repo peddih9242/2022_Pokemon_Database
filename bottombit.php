@@ -1,7 +1,7 @@
         
         <div class="box side">
            
-           <h2>Add an App | Show All</h2>
+           <h2>Add an App | <a href="showall.php">Show All</a></h2>
            
            <p>This is where the search area goes
 

@@ -1,11 +1,11 @@
 <?php include("topbit.php"); 
 
     $find_sql = "SELECT * FROM `pokemon_details`
-    JOIN pokemon_type ON (pokemon_details.PokemonType1ID) = pokemon_type.TypeID)
-    JOIN pokemon_type ON (pokemon_details.PokemonType2ID) = pokemon_type.TypeID)
+    JOIN pokemon_type ON (pokemon_details.PokemonType1ID = pokemon_type.TypeID) AND
+    (pokemon_details.PokemonType2ID = pokemon_type.TypeID)
     ";
 
-    $find_query = mysqli_query($find_sql, $dbconnect);
+    $find_query = mysqli_query($dbconnect, $find_sql);
     $find_rs = mysqli_fetch_assoc($find_query);
     $count = mysqli_num_rows($find_query);
 
@@ -17,7 +17,6 @@
             
             
             <p>
-                <div class="results">
                     
                     <?php 
                     if($count < 1) {
@@ -44,11 +43,6 @@
                                             <?php echo $find_rs['Name']; ?>
                                         </span>
                                     </div> <!-- Title -->
-                                
-                                <div>
-                                    &nbsp; &nbsp; | &nbsp; &nbsp;
-                                    <?php echo $find_rs['Subtitle']; ?>
-                                </div> <!-- Subtitle -->
 
                                 </div> <!-- / flex container div -->
                             
@@ -57,33 +51,53 @@
                             <p>
                                 <b>Pokemon Type 1</b>
                                 <?php echo $find_rs['Type']; ?>
+
+                                <br />
                             
                                 <b>Pokemon Type 2</b>
                                 <?php echo $find_rs['Type']; ?>
 
+                                <br />
+
                                 <b>Total Stats</b>
                                 <?php echo $find_rs['Total']; ?>
+
+                                <br />
 
                                 <b>HP</b>
                                 <?php echo $find_rs['HP']; ?>
 
+                                <br />
+
                                 <b>Attack</b>
                                 <?php echo $find_rs['Attack']; ?>
+
+                                <br />
 
                                 <b>Defense</b>
                                 <?php echo $find_rs['Defense']; ?>
                                 
+                                <br />
+
                                 <b>Special Attack</b>
                                 <?php echo $find_rs['Sp. Atk']; ?>
+
+                                <br />
 
                                 <b>Special Defense</b>
                                 <?php echo $find_rs['Sp. Def']; ?>
 
+                                <br />
+
                                 <b>Speed</b>
                                 <?php echo $find_rs['Speed']; ?>
 
+                                <br />
+
                                 <b>Generation</b>
-                                <?php echo $find_rs['Speed']; ?>
+                                <?php echo $find_rs['Generation']; ?>
+
+                                <br />
 
                                 <?php 
                                 if($find_rs['Legendary'] == "1")
@@ -94,10 +108,12 @@
                                 <?php
                                 } 
                                 ?>
-
+                                
                             </p>
                          
                             </div> <!-- results div -->
+
+                            <br />
 
                     <?php
 
@@ -108,7 +124,6 @@
                     ?>
 
 
-                </div>
             </p>
             
         </div> <!-- / main -->

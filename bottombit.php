@@ -3,8 +3,15 @@
            
            <h2>Add an App | <a href="showall.php">Show All</a></h2>
            
-           <p>This is where the search area goes
+            <hr />
 
+           <form class="searchform" method="post" action="pokemon_name.php" enctype="multipart/form-data">
+
+           <input class="search" type="text" name="poke_name" size="30" value="" required placeholder="Pokemon Name..." />
+            <input class="submit" type="submit" name="find_pokemon" value="&#xf002;" />
+
+
+           </form>
             
         </div> <!-- / side bar -->
         

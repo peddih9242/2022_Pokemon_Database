@@ -13,7 +13,6 @@
             <h3>Acknowledgements and Sources</h3>
             <ul>
                 <li><a href="https://www.kaggle.com/rounakbanik/pokemon">Original Pokemon Dataset</a></li>
-                <li>The <a href="https://codepen.io/Bluetidepro/pen/AGXMMp">percentage based star code</a> can be found here.</li>
             </ul>
 
 

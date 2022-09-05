@@ -1,14 +1,8 @@
 <?php include("topbit.php"); 
 
-    $find_sql = "SELECT * FROM `pokemon_details`,
-    poketypeID1.Type AS poketype1
-    poketypeID2.Type AS poketype2
-    FROM pokemon_details AS details
-    JOIN pokemon_type AS poketypeID1 ON (details.PokemonType1ID = poketypeID1.TypeID) AND
-    JOIN pokemon_type AS poketypeID2 ON (details.PokemonType2ID = poketypeID2.TypeID)
-    -- JOIN pokemon_type poketype2 ON (pokemon_details.PokemonType2ID = pokemon_type.TypeID)
-    -- JOIN pokemon_type ON (pokemon_details.PokemonType1ID = pokemon_type.TypeID) AND
-    -- (pokemon_details.PokemonType2ID = pokemon_type.TypeID)
+    $find_sql = "SELECT * FROM `pokemon_details`
+    JOIN pokemon_type ON (pokemon_details.PokemonType1ID) = pokemon_type.TypeID)
+    JOIN pokemon_type ON (pokemon_details.PokemonType2ID) = pokemon_type.TypeID)
     ";
 
     $find_query = mysqli_query($dbconnect, $find_sql);
@@ -56,12 +50,28 @@
 
                             <p>
                                 <b>Pokemon Type 1</b>
-                                <?php echo $find_rs['poketype1']; ?>
+                                <?php 
+                                $type_1 = $find_rs['PokemonType1ID']; 
+                                $find_id_sql_1 = "SELECT * FROM `pokemon_type` WHERE `TypeID` $type_1
+                                ";
+                                $find_id_query_1 = mysqli_query($dbconnect, $find_id_sql_1);
+                                $find_id_rs_1 = mysqli_fetch_assoc($find_id_query_1);
+                                echo $find_id_rs_1['Type'];
+                                ?>
 
                                 <br />
                             
                                 <b>Pokemon Type 2</b>
-                                <?php echo $find_rs['poketype2']; ?>
+                                <?php
+
+                                $type_2 = $find_rs['PokemonType2ID']; 
+                                $find_id_sql_2 = "SELECT * FROM `pokemon_type` WHERE `TypeID` $type_2
+                                ";
+                                $find_id_query_2 = mysqli_query($dbconnect, $find_id_sql_2);
+                                $find_id_rs_2 = mysqli_fetch_assoc($find_id_query_2);
+                                echo $find_id_rs_2['Type'];
+
+                                ?>
 
                                 <br />
 

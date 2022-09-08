@@ -27,6 +27,7 @@ else {
         <!-- / heading and subtitle -->
         
         <p>
+
         <b>Pokemon Type 1:</b>
         <?php 
         $type_1 = $find_rs['PokemonType1ID']; 
@@ -92,7 +93,6 @@ else {
         <?php echo $find_rs['Generation']; ?>
 
         <br />
-
 
 
         <b>

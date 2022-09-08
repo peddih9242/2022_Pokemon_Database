@@ -18,6 +18,22 @@
 
            </form>
 
+           <hr />
+
+           <form class="searchform" method="post" action="advanced.php" enctype="multipart/form-data">
+
+           <input class="adv" type="text" name="pokemon_name" size="30" value="" placeholder="Pokemon Name..."/>
+
+           <select class="search adv" name="genre">
+
+            <option value="" selected>Pokemon Type 1...</option>
+
+            <!-- get options from database -->
+
+           </select>
+
+           </form>
+
         </div> <!-- / side bar -->
         
         <div class="box footer">

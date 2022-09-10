@@ -22,6 +22,7 @@
 
            <form class="searchform" method="post" action="advanced.php" enctype="multipart/form-data">
 
+           <!-- pokemon name text input box -->
            <input class="adv" type="text" name="pokemon_name" size="30" value="" placeholder="Pokemon Name..."/>
 
            <!-- Pokemon type 1 dropdown -->
@@ -53,26 +54,29 @@
 
             <!-- Pokemon type 2 dropdown -->
             <select class="search adv" name="type_2">
-                <option value="" selected>Pokemon Type 2...</option>
-                
-                <?php
-                $type_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
-                ";
-                $type_query = mysqli_query($dbconnect, $type_sql);
-                $type_rs = mysqli_fetch_assoc($type_query);
-
-                do {
-                ?>
-                <option value="<?php echo $type_rs['Type']; ?>"><?php echo $type_rs['Type']; ?></option>
+            <option value="" selected>Pokemon Type 2...</option>
             
-                <?php
-                }
+            <!-- get options from database -->
+            <?php
+            $type_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
+            ";
+            $type_query = mysqli_query($dbconnect, $type_sql);
+            $type_rs = mysqli_fetch_assoc($type_query);
 
-                while($type_rs=mysqli_fetch_assoc($type_query))
+            do {
+            ?>
+            <option value="<?php echo $type_rs['Type']; ?>"><?php echo $type_rs['Type']; ?></option>
+        
+            <?php
+            }
 
-                ?>
+            while($type_rs=mysqli_fetch_assoc($type_query))
+
+            ?>
             
             </select>
+
+            
 
            </form>
 

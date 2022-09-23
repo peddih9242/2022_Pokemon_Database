@@ -35,19 +35,19 @@
 
             <?php 
             
-            $type_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
+            $type_1_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
             ";
-            $type_query = mysqli_query($dbconnect, $type_sql);
-            $type_rs = mysqli_fetch_assoc($type_query);
+            $type_1_query = mysqli_query($dbconnect, $type_1_sql);
+            $type_1_rs = mysqli_fetch_assoc($type_1_query);
 
             do {
                 ?>
-                <option value="<?php echo $type_rs['TypeID']; ?>"><?php echo $type_rs['Type']; ?></option>
+                <option value="<?php echo $type_1_rs['TypeID']; ?>"><?php echo $type_1_rs['Type']; ?></option>
             
             <?php
             }
 
-            while($type_rs=mysqli_fetch_assoc($type_query))
+            while($type_1_rs=mysqli_fetch_assoc($type_1_query))
 
             ?>
 
@@ -59,19 +59,19 @@
             
             <!-- get options from database -->
             <?php
-            $type_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
+            $type_2_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
             ";
-            $type_query = mysqli_query($dbconnect, $type_sql);
-            $type_rs = mysqli_fetch_assoc($type_query);
+            $type_2_query = mysqli_query($dbconnect, $type_2_sql);
+            $type_2_rs = mysqli_fetch_assoc($type_2_query);
 
             do {
             ?>
-            <option value="<?php echo $type_rs['TypeID']; ?>"><?php echo $type_rs['Type']; ?></option>
+            <option value="<?php echo $type_2_rs['TypeID']; ?>"><?php echo $type_2_rs['Type']; ?></option>
         
             <?php
             }
 
-            while($type_rs=mysqli_fetch_assoc($type_query))
+            while($type_2_rs=mysqli_fetch_assoc($type_2_query))
 
             ?>
             

@@ -5,13 +5,34 @@ $pokemon_name = mysqli_real_escape_string($dbconnect, $_POST['pokemon_name']);
 $pokemon_type1 = mysqli_real_escape_string($dbconnect, $_POST['type_1']);
 $pokemon_type2 = mysqli_real_escape_string($dbconnect, $_POST['type_2']);
 
+if ($_POST['type_1'] == "")
+{
+    $pokemon_type1 = 0;
+    $type_op_1 = ">=";
+} 
+else
+{
+    $type_op_1 = "=";
+}
+
+
+if ($_POST['type_2'] == "")
+{
+    $pokemon_type2 = 0;
+    $type_op_2 = ">=";
+} 
+else
+{
+    $type_op_2 = "=";
+}
+
 // legendary
 if (isset($_POST['legendary']))
 {
     $legendary = 1;
 }
 
-else{
+else {
     $legendary = 0;
 } // end else
 
@@ -72,10 +93,10 @@ else {
 
 $find_sql = "SELECT * FROM `pokemon_details`
 WHERE `Name` LIKE '%$pokemon_name%'
-AND `PokemonType1ID` = '$pokemon_type1'
-AND `PokemonType2ID` = '$pokemon_type2'
+AND (`PokemonType1ID` $type_1_op '$pokemon_type1' OR `PokemonType1ID` $type_1_op '$pokemon_type2')
+AND (`PokemonType2ID` $type_2_op '$pokemon_type2' OR `PokemonType2ID` $type_2_op '$pokemon_type1')
 AND `Total` $total_op '$total'
-AND `Generation` $gen_op '$gen'
+AND `Generation` $gen_op '$gen' 
 AND (`Legendary` = $legendary OR `Legendary` = 0)
 ";
 $find_query = mysqli_query($dbconnect, $find_sql);

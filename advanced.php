@@ -26,16 +26,6 @@ else
     $type_op_2 = "=";
 }
 
-// legendary
-if (isset($_POST['legendary']))
-{
-    $legendary = 1;
-}
-
-else {
-    $legendary = 0;
-} // end else
-
 // total
 $total = mysqli_real_escape_string($dbconnect, $_POST['total']);
 $total_more_less = mysqli_real_escape_string($dbconnect, $_POST['total_more_less']);
@@ -78,26 +68,32 @@ else {
     $gen = 0;
 }
 
+// legendary
+$legendary = mysqli_real_escape_string($dbconnect, $_POST['legendary']);
 
-// $type_1_sql = "SELECT * FROM `pokemon_type` WHERE `Type` == $pokemon_type1
-// ";
-// $type_1_query = mysqli_query($dbconnect, $type_1_sql);
-// $type_1_rs = mysqli_fetch_assoc($type_1_query);
-// $type_1ID = $type_1_rs['TypeID'];
-
-// $type_2_sql = "SELECT * FROM `pokemon_type` WHERE `Type` == $pokemon_type2
-// ";
-// $type_2_query = mysqli_query($dbconnect, $type_2_sql);
-// $type_2_rs = mysqli_fetch_assoc($type_2_query);
-// $type_2ID = $type_1_rs['TypeID'];
+if ($legendary == "1")
+{
+    $legendary_op = "=";
+    $legendary = 0;
+}
+elseif ($legendary == "2")
+{
+    $legendary_op = "=";
+    $legendary = 1;
+}
+else
+{
+    $legendary_op = ">=";
+    $legendary = 0;
+}
 
 $find_sql = "SELECT * FROM `pokemon_details`
 WHERE `Name` LIKE '%$pokemon_name%'
-AND (`PokemonType1ID` $type_1_op '$pokemon_type1' OR `PokemonType1ID` $type_1_op '$pokemon_type2')
-AND (`PokemonType2ID` $type_2_op '$pokemon_type2' OR `PokemonType2ID` $type_2_op '$pokemon_type1')
+AND (`PokemonType1ID` $type_op_1 '$pokemon_type1' OR `PokemonType1ID` $type_op_1 '$pokemon_type2')
+AND (`PokemonType2ID` $type_op_2 '$pokemon_type2' OR `PokemonType2ID` $type_op_2 '$pokemon_type1')
 AND `Total` $total_op '$total'
 AND `Generation` $gen_op '$gen' 
-AND (`Legendary` = $legendary OR `Legendary` = 0)
+AND `Legendary` $legendary_op '$legendary'
 ";
 $find_query = mysqli_query($dbconnect, $find_sql);
 $find_rs = mysqli_fetch_assoc($find_query);

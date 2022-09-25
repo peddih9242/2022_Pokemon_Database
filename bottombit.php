@@ -117,8 +117,15 @@
 
         <!-- legendary checkbox -->
 
-        <input class="adv-txt" type="checkbox" name="legendary" value="0"/>Legendary
+        <select class="search adv" name="legendary">
+            <option value="">Legendary Search...</option>
+            <option value="1">Non-Legendary Only</option>
+            <option value="2">Legendary Only</option>
+            <option value="3">Legendary and Non-Legendary</option>
 
+        </select>
+
+        <!-- submit button -->
         <input class="submit advanced-button" type="submit" name="advanced" value="Search &nbsp; &#xf002;" />
 
         </form>

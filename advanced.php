@@ -5,7 +5,7 @@ $pokemon_name = mysqli_real_escape_string($dbconnect, $_POST['pokemon_name']);
 $pokemon_type1 = mysqli_real_escape_string($dbconnect, $_POST['type_1']);
 $pokemon_type2 = mysqli_real_escape_string($dbconnect, $_POST['type_2']);
 
-if ($_POST['type_1'] == "")
+if (empty($pokemon_type1))
 {
     $pokemon_type1 = 0;
     $type_op_1 = ">=";
@@ -16,7 +16,7 @@ else
 }
 
 
-if ($_POST['type_2'] == "")
+if (empty($pokemon_type2))
 {
     $pokemon_type2 = 0;
     $type_op_2 = ">=";

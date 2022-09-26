@@ -33,10 +33,16 @@ $total_more_less = mysqli_real_escape_string($dbconnect, $_POST['total_more_less
 if ($total_more_less == "lower")
 {
     $total_op = "<=";
+    if ($total == ""){
+        $total_op = ">=";
+    }
 }
 elseif ($total_more_less == "equal")
 {
     $total_op = "=";
+    if ($total == ""){
+        $total_op = ">=";
+    }
 }
 elseif ($total_more_less == "higher")
 {
@@ -54,10 +60,16 @@ $gen_more_less = mysqli_real_escape_string($dbconnect, $_POST['gen_more_less']);
 if ($gen_more_less == "lower")
 {
     $gen_op = "<=";
+    if ($gen == ""){
+        $gen_op = ">=";
+    }
 }
 elseif ($gen_more_less == "equal")
 {
     $gen_op = "=";
+    if ($gen == ""){
+        $gen_op = ">=";
+    }
 }
 elseif ($gen_more_less == "higher")
 {
@@ -104,7 +116,7 @@ $count = mysqli_num_rows($find_query);
                        
             
         <div class="box main">
-        <h2>Advanced Search</h2>
+        <h2>Advanced Search Results</h2>
         <?php include("results.php"); ?>
         </div> <!-- / main -->
 

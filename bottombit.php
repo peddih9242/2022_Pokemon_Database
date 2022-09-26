@@ -1,7 +1,7 @@
         
         <div class="box side">
            
-           <h2>Add an App | <a href="showall.php">Show All</a></h2>
+           <h2><a href="addentry.php">Add a Pokemon</a> | <a href="showall.php">Show All</a></h2>
            
             <hr />
 

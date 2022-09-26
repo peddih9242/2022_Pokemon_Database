@@ -94,7 +94,6 @@ else {
 
         <br />
 
-
         <b>
         <?php 
         if($find_rs['Legendary'] == "1")

@@ -5,7 +5,7 @@ $pokemon_name = mysqli_real_escape_string($dbconnect, $_POST['pokemon_name']);
 $pokemon_type1 = mysqli_real_escape_string($dbconnect, $_POST['type_1']);
 $pokemon_type2 = mysqli_real_escape_string($dbconnect, $_POST['type_2']);
 
-if (empty($pokemon_type1))
+if ($pokemon_type1 == "")
 {
     $pokemon_type1 = 0;
     $type_op_1 = ">=";
@@ -16,7 +16,7 @@ else
 }
 
 
-if (empty($pokemon_type2))
+if ($pokemon_type2 == "")
 {
     $pokemon_type2 = 0;
     $type_op_2 = ">=";
@@ -89,11 +89,12 @@ else
 
 $find_sql = "SELECT * FROM `pokemon_details`
 WHERE `Name` LIKE '%$pokemon_name%'
-AND (`PokemonType1ID` $type_op_1 '$pokemon_type1' OR `PokemonType1ID` $type_op_1 '$pokemon_type2')
-AND (`PokemonType2ID` $type_op_2 '$pokemon_type2' OR `PokemonType2ID` $type_op_2 '$pokemon_type1')
+AND `PokemonType1ID` $type_op_1 '$pokemon_type1'
+AND `PokemonType2ID` $type_op_2 '$pokemon_type2'
 AND `Total` $total_op '$total'
 AND `Generation` $gen_op '$gen' 
 AND `Legendary` $legendary_op '$legendary'
+ORDER BY `pokemon_details`.`Name` ASC
 ";
 $find_query = mysqli_query($dbconnect, $find_sql);
 $find_rs = mysqli_fetch_assoc($find_query);

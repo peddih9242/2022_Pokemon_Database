@@ -3,7 +3,6 @@
 $pokemon_name = "";
 $poke_type_1 = "";
 $poke_type_2 = "";
-$total = "";
 $hp = "";
 $attack = "";
 $defense = "";
@@ -13,9 +12,9 @@ $speed = "";
 $generation = "";
 $legendary = "";
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    $has_errors = "no";
     $pokemon_name = mysqli_real_escape_string($dbconnect, $_POST['pokemon_name']);
 
     if ($pokemon_name == ""){
@@ -29,12 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $poke_type_2 = mysqli_real_escape_string($dbconnect, $_POST['poke_type_2']);
     if ($poke_type_2 == ""){
-        $has_errors == "yes";
-    }
-    
-    $total = mysqli_real_escape_string($dbconnect, $_POST['total']);
-    
-    if ($total == ""){
         $has_errors == "yes";
     }
 
@@ -80,7 +73,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($has_errors != "yes"){
-    // go to sucecss page
+
+    // calculate total based on stats given
+    $total = $hp + $attack + $defense + $spatk + $spdef + $speed;
+
+    // add entry to database
+    $add_entry_sql = "INSERT INTO `pokemon_details` (`ID`, `Name`, 
+    `PokemonType1ID`, `PokemonType2ID`, `Total`, `HP`, `Attack`, `Defense`, `Sp. Atk`, `Sp. Def`, `Speed`, `Generation`, `Legendary`) 
+    VALUES (NULL, '$pokemon_name', '$poke_type_1', '$poke_type_2', '$total', '$hp', '$attack', '$defense', '$spatk', 
+    '$spdef', '$speed', '$generation', '$legendary')
+    ";
+
+    $add_entry_query = mysqli_query($dbconnect, $add_entry_sql);
+
+    // get id for next page
+    $get_id_sql = "SELECT * FROM `pokemon_details` 
+    WHERE `Name` LIKE '$pokemon_name'
+    AND `PokemonType1ID` = '$poke_type_1'
+    AND `PokemonType2ID` = '$poke_type_2'
+    AND `Total` = '$total'
+    AND `HP` = '$hp'
+    AND `Attack` = '$attack'
+    AND `Defense` = '$defense'
+    AND `Sp. Atk` = '$spatk'
+    AND `Sp. Def` = '$spdef'
+    AND `Speed` = '$speed'
+    AND `Generation` = '$generation'
+    AND `Legendary` = '$legendary'
+    ";
+    $get_id_query = mysqli_query($dbconnect, $get_id_sql);
+    $get_id_rs = mysqli_fetch_assoc($get_id_query);
+
+    $ID = $get_id_rs['ID'];
+    $_SESSION['ID'] = $ID;
+
+    // go to success page
     header('Location: add_success.php');
     }
 

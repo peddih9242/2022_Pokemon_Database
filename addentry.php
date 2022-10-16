@@ -12,6 +12,13 @@ $speed = "";
 $generation = "";
 $legendary = "";
 
+// set up error field colours
+
+$name_error = $type_error_1 = $type_error_2 = $hp_error = $attack_error = $defense_error = $spatk_error = $spdef_error = $speed_error = $gen_error = "no-error";
+
+$name_field = $type_field_1 = $type_field_2 = $hp_field = $attack_field = $defense_field = $spatk_field = $spdef_field = $speed_field = $gen_field = "form-ok";
+
+// set up and check for errors when submit button pressed, then add entry
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $has_errors = "no";
@@ -19,59 +26,82 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($pokemon_name == ""){
         $has_errors = "yes";
+        $name_error = "error-text";
+        $name_field = "form-error";
     }
 
     $poke_type_1 = mysqli_real_escape_string($dbconnect, $_POST['poke_type_1']);
     if ($poke_type_1 == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $type_error_1 = "error-text";
+        $type_field_1 = "form-error";
+    }
+    elseif ($poke_type_1 == "0"){
+        $has_errors = "yes";
+        $type_error_1 = "error-text";
+        $type_field_1 = "form-error";
     }
 
     $poke_type_2 = mysqli_real_escape_string($dbconnect, $_POST['poke_type_2']);
     if ($poke_type_2 == ""){
         $has_errors == "yes";
+        $type_error_2 = "error-text";
+        $type_field_2 = "form-error";
     }
 
     $hp = mysqli_real_escape_string($dbconnect, $_POST['hp']);
     
     if ($hp == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $hp_error = "error-text";
+        $hp_field = "form-error";
     }
 
     $attack = mysqli_real_escape_string($dbconnect, $_POST['attack']);
     if ($attack == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $attack_error = "error-text";
+        $attack_field = "form-error";
     }
 
     $defense = mysqli_real_escape_string($dbconnect, $_POST['defense']);
     if ($defense == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $defense_error = "error-text";
+        $defense_field = "form-error";
     }
     
     $spatk = mysqli_real_escape_string($dbconnect, $_POST['spatk']);
     if ($spatk == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $spatk_error = "error-text";
+        $spatk_field = "form-error";
     }
 
     $spdef = mysqli_real_escape_string($dbconnect, $_POST['spdef']);
     if ($spdef == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $spdef_error = "error-text";
+        $spdef_field = "form-error";
     }
 
     $speed = mysqli_real_escape_string($dbconnect, $_POST['speed']);
     if ($speed == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $speed_error = "error-text";
+        $speed_field = "form-error";
     }
     
     $generation = mysqli_real_escape_string($dbconnect, $_POST['generation']);
     if ($generation == ""){
-        $has_errors == "yes";
+        $has_errors = "yes";
+        $gen_error = "error-text";
+        $gen_field = "form-error";
     }
     
     $legendary = mysqli_real_escape_string($dbconnect, $_POST['legendary']);
-    if ($legendary == ""){
-        $has_errors == "yes";
-    }
 
+    // make sure there are no errors then add entry
     if ($has_errors != "yes"){
 
     // calculate total based on stats given
@@ -108,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['ID'] = $ID;
 
     // go to success page
-    header('Location: add_success.php');
+    // header('Location: add_success.php');
     }
 
 }
@@ -123,10 +153,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             
             <!-- Pokemon Name -->
-            <input class="add-field" type="text" name="pokemon_name" placeholder="Pokemon Name..." required/>
+            <div class="<?php echo $name_error; ?>">
+            Please fill in the 'Pokemon Name' field
+            </div>
+            <input class="add-field <?php echo $name_field; ?>" type="text" name="pokemon_name" placeholder="Pokemon Name..."/>
                 
             <!-- Pokemon Type 1 -->
-            <select class="adv" name="poke_type_1" required>
+            <div class="<?php echo $type_error_1; ?>">
+                Please select a valid first type
+            </div>
+            <select class="adv <?php echo $type_field_1; ?>" name="poke_type_1">
             <option value="" selected disabled>Pokemon Type 1...</option>
 
             <!-- get options from database -->
@@ -152,7 +188,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
 
             <!-- Pokemon Type 2 -->
-            <select class="adv" name="poke_type_2" required>
+            <div class="<?php echo $type_error_2; ?>">
+            Please select a valid type
+            </div>
+            <select class="adv <?php echo $type_field_2; ?>" name="poke_type_2">
             <option value="" selected disabled>Pokemon Type 2...</option>
 
             <!-- get options from database -->
@@ -176,19 +215,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </select>
 
-            <input class="add-field" type="text" name="hp" placeholder="HP..." required/>
+            <div class="<?php echo $hp_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $hp_field; ?>" type="text" name="hp" placeholder="HP..."/>
 
-            <input class="add-field" type="text" name="attack" placeholder="Attack..." required/>
+            <div class="<?php echo $attack_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $attack_field; ?>" type="text" name="attack" placeholder="Attack..."/>
 
-            <input class="add-field" type="text" name="defense" placeholder="Defense..." required/>
+            <div class="<?php echo $defense_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $defense_field; ?>" type="text" name="defense" placeholder="Defense..."/>
 
-            <input class="add-field" type="text" name="spatk" placeholder="Special Attack..." required/>
+            <div class="<?php echo $spatk_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $spatk_field; ?>" type="text" name="spatk" placeholder="Special Attack..."/>
 
-            <input class="add-field" type="text" name="spdef" placeholder="Special Defense..." required/>
+            <div class="<?php echo $spdef_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $spdef_field; ?>" type="text" name="spdef" placeholder="Special Defense..."/>
 
-            <input class="add-field" type="text" name="speed" placeholder="Speed..." required/>
+            <div class="<?php echo $speed_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $speed_field; ?>" type="text" name="speed" placeholder="Speed..."/>
 
-            <input class="add-field" type="text" name="generation" placeholder="Generation..." required/>
+            <div class="<?php echo $gen_error; ?>">
+            Please enter a number above 0
+            </div>
+            <input class="add-field <?php echo $gen_field; ?>" type="text" name="generation" placeholder="Generation..."/>
             
             <br />
             <br />

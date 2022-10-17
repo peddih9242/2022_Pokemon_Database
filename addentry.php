@@ -1,8 +1,8 @@
 <?php include("topbit.php"); 
 
 $pokemon_name = "";
-$poke_type_1 = "";
-$poke_type_2 = "";
+$poke_type_1ID = "";
+$poke_type_2ID = "";
 $hp = "";
 $attack = "";
 $defense = "";
@@ -22,36 +22,51 @@ $name_field = $type_field_1 = $type_field_2 = $hp_field = $attack_field = $defen
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $has_errors = "no";
+    // checking for many blanks and number errors
     $pokemon_name = mysqli_real_escape_string($dbconnect, $_POST['pokemon_name']);
-
     if ($pokemon_name == ""){
         $has_errors = "yes";
         $name_error = "error-text";
         $name_field = "form-error";
     }
 
-    $poke_type_1 = mysqli_real_escape_string($dbconnect, $_POST['poke_type_1']);
-    if ($poke_type_1 == ""){
-        $has_errors = "yes";
-        $type_error_1 = "error-text";
-        $type_field_1 = "form-error";
+    $poke_type_1ID = mysqli_real_escape_string($dbconnect, $_POST['poke_type_1ID']);
+    if ($poke_type_1ID != "" && $poke_type_1ID != "0"){
+    $type_sql_1 = "SELECT * FROM `pokemon_type` WHERE `TypeID` = $poke_type_1ID
+    ";
+    $type_query_1 = mysqli_query($dbconnect, $type_sql_1);
+    $type_rs_1 = mysqli_fetch_assoc($type_query_1);
+    $poke_type_1 = $type_rs_1['Type'];
     }
-    elseif ($poke_type_1 == "0"){
+
+    elseif ($poke_type_1ID == "" || $poke_type_1ID == "0"){
         $has_errors = "yes";
         $type_error_1 = "error-text";
         $type_field_1 = "form-error";
     }
 
-    $poke_type_2 = mysqli_real_escape_string($dbconnect, $_POST['poke_type_2']);
-    if ($poke_type_2 == ""){
+
+    $poke_type_2ID = mysqli_real_escape_string($dbconnect, $_POST['poke_type_2ID']);
+    if ($poke_type_2ID != ""){
+        $type_sql_2 = "SELECT * FROM `pokemon_type` WHERE `TypeID` = $poke_type_2ID
+        ";
+        $type_query_2 = mysqli_query($dbconnect, $type_sql_2);
+        $type_rs_2 = mysqli_fetch_assoc($type_query_2);
+        $poke_type_2 = $type_rs_2['Type'];
+    }
+    else{
         $has_errors == "yes";
         $type_error_2 = "error-text";
         $type_field_2 = "form-error";
     }
 
     $hp = mysqli_real_escape_string($dbconnect, $_POST['hp']);
-    
     if ($hp == ""){
+        $has_errors = "yes";
+        $hp_error = "error-text";
+        $hp_field = "form-error";
+    }
+    elseif (!ctype_digit($hp) || $hp <= 0) {
         $has_errors = "yes";
         $hp_error = "error-text";
         $hp_field = "form-error";
@@ -63,9 +78,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $attack_error = "error-text";
         $attack_field = "form-error";
     }
+    elseif(!ctype_digit($attack) || $attack <= 0) {
+        $has_errors = "yes";
+        $attack_error = "error-text";
+        $attack_field = "form-error";
+    }
 
     $defense = mysqli_real_escape_string($dbconnect, $_POST['defense']);
     if ($defense == ""){
+        $has_errors = "yes";
+        $defense_error = "error-text";
+        $defense_field = "form-error";
+    }
+    elseif(!ctype_digit($defense) || $defense <= 0) {
         $has_errors = "yes";
         $defense_error = "error-text";
         $defense_field = "form-error";
@@ -77,9 +102,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $spatk_error = "error-text";
         $spatk_field = "form-error";
     }
+    elseif(!ctype_digit($spatk) || $spatk <= 0){
+        $has_errors = "yes";
+        $spatk_error = "error-text";
+        $spatk_field = "form-error";
+    }
 
     $spdef = mysqli_real_escape_string($dbconnect, $_POST['spdef']);
     if ($spdef == ""){
+        $has_errors = "yes";
+        $spdef_error = "error-text";
+        $spdef_field = "form-error";
+    }
+    elseif(!ctype_digit($spdef) || $spdef <= 0){
         $has_errors = "yes";
         $spdef_error = "error-text";
         $spdef_field = "form-error";
@@ -91,6 +126,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $speed_error = "error-text";
         $speed_field = "form-error";
     }
+    elseif(!ctype_digit($speed) || $speed <= 0)
+    {
+        $has_errors = "yes";
+        $speed_error = "error-text";
+        $speed_field = "form-error";
+    }
     
     $generation = mysqli_real_escape_string($dbconnect, $_POST['generation']);
     if ($generation == ""){
@@ -98,10 +139,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $gen_error = "error-text";
         $gen_field = "form-error";
     }
+    elseif(!ctype_digit($generation) || $generation <= 0)
+    {
+        $has_errors = "yes";
+        $gen_error = "error-text";
+        $gen_field = "form-error";
+    }
     
     $legendary = mysqli_real_escape_string($dbconnect, $_POST['legendary']);
 
-    // make sure there are no errors then add entry
+    // if there are no errors in the data given, calculate
+    // total stat and add pokemon into database
     if ($has_errors != "yes"){
 
     // calculate total based on stats given
@@ -110,17 +158,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // add entry to database
     $add_entry_sql = "INSERT INTO `pokemon_details` (`ID`, `Name`, 
     `PokemonType1ID`, `PokemonType2ID`, `Total`, `HP`, `Attack`, `Defense`, `Sp. Atk`, `Sp. Def`, `Speed`, `Generation`, `Legendary`) 
-    VALUES (NULL, '$pokemon_name', '$poke_type_1', '$poke_type_2', '$total', '$hp', '$attack', '$defense', '$spatk', 
+    VALUES (NULL, '$pokemon_name', '$poke_type_1ID', '$poke_type_2ID', '$total', '$hp', '$attack', '$defense', '$spatk', 
     '$spdef', '$speed', '$generation', '$legendary')
     ";
 
     $add_entry_query = mysqli_query($dbconnect, $add_entry_sql);
 
-    // get id for next page
+    // get the pokemon that was just added
     $get_id_sql = "SELECT * FROM `pokemon_details` 
     WHERE `Name` LIKE '$pokemon_name'
-    AND `PokemonType1ID` = '$poke_type_1'
-    AND `PokemonType2ID` = '$poke_type_2'
+    AND `PokemonType1ID` = '$poke_type_1ID'
+    AND `PokemonType2ID` = '$poke_type_2ID'
     AND `Total` = '$total'
     AND `HP` = '$hp'
     AND `Attack` = '$attack'
@@ -134,6 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $get_id_query = mysqli_query($dbconnect, $get_id_sql);
     $get_id_rs = mysqli_fetch_assoc($get_id_query);
 
+    // get the id of pokemon that was just added to show on success page
     $ID = $get_id_rs['ID'];
     $_SESSION['ID'] = $ID;
 
@@ -156,14 +205,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="<?php echo $name_error; ?>">
             Please fill in the 'Pokemon Name' field
             </div>
-            <input class="add-field <?php echo $name_field; ?>" type="text" name="pokemon_name" placeholder="Pokemon Name..."/>
+            <input class="add-field <?php echo $name_field; ?>" type="text" value = "<?php echo $pokemon_name?>"name="pokemon_name" placeholder="Pokemon Name..."/>
                 
             <!-- Pokemon Type 1 -->
             <div class="<?php echo $type_error_1; ?>">
-                Please select a valid first type
+                Please select a valid first type (Can't be N/A)
             </div>
-            <select class="adv <?php echo $type_field_1; ?>" name="poke_type_1">
-            <option value="" selected disabled>Pokemon Type 1...</option>
+            <select class="adv <?php echo $type_field_1; ?>" name="poke_type_1ID">
+            <?php 
+            // display type normally if invalid input given
+            if ($poke_type_1ID == "" || $poke_type_1ID == "0") { 
+                ?>
+                <option value="" selected>Pokemon Type 1...</option>
+            <?php
+            }
+            // if valid input is given then have it selected when page reloaded
+            else {
+                ?>
+                <option value="<?php echo $poke_type_1ID; ?>"><?php echo $poke_type_1 ?></option>
+            <?php
+            }
+            ?>
+            
 
             <!-- get options from database -->
 
@@ -173,7 +236,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ";
             $type_query_1 = mysqli_query($dbconnect, $type_sql_1);
             $type_rs_1 = mysqli_fetch_assoc($type_query_1);
-
 
             do {
             ?>
@@ -191,8 +253,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="<?php echo $type_error_2; ?>">
             Please select a valid type
             </div>
-            <select class="adv <?php echo $type_field_2; ?>" name="poke_type_2">
-            <option value="" selected disabled>Pokemon Type 2...</option>
+            <select class="adv <?php echo $type_field_2; ?>" name="poke_type_2ID">
+            <?php
+            // display type normally if invalid input given
+            if ($poke_type_2ID == "") {
+            ?>
+            <option value="" selected>Pokemon Type 2...</option>
+            <?php
+            }
+            // if valid input given then have it selected when page reloaded
+            else {
+                ?>
+                <option value="<?php echo $type_rs_2['TypeID']; ?>"><?php echo $poke_type_2; ?></option>
+            <?php
+            }
+            ?>
+            
 
             <!-- get options from database -->
 
@@ -215,40 +291,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </select>
 
+            <!-- pokemon stat error and input fields -->
             <div class="<?php echo $hp_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'HP' field
             </div>
-            <input class="add-field <?php echo $hp_field; ?>" type="text" name="hp" placeholder="HP..."/>
+            <input class="add-field <?php echo $hp_field; ?>" type="text" value="<?php echo $hp?>" name="hp" placeholder="HP..."/>
 
             <div class="<?php echo $attack_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'Attack' field
             </div>
-            <input class="add-field <?php echo $attack_field; ?>" type="text" name="attack" placeholder="Attack..."/>
+            <input class="add-field <?php echo $attack_field; ?>" type="text" value="<?php echo $attack ?>" name="attack" placeholder="Attack..."/>
 
             <div class="<?php echo $defense_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'Defense' field
             </div>
-            <input class="add-field <?php echo $defense_field; ?>" type="text" name="defense" placeholder="Defense..."/>
+            <input class="add-field <?php echo $defense_field; ?>" type="text" value="<?php echo $defense?>" name="defense" placeholder="Defense..."/>
 
             <div class="<?php echo $spatk_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'Special Attack' field
             </div>
-            <input class="add-field <?php echo $spatk_field; ?>" type="text" name="spatk" placeholder="Special Attack..."/>
+            <input class="add-field <?php echo $spatk_field; ?>" type="text" value="<?php echo $spatk ?>"name="spatk" placeholder="Special Attack..."/>
 
             <div class="<?php echo $spdef_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'Special Defense' field
             </div>
-            <input class="add-field <?php echo $spdef_field; ?>" type="text" name="spdef" placeholder="Special Defense..."/>
+            <input class="add-field <?php echo $spdef_field; ?>" type="text" value="<?php echo $spdef ?>" name="spdef" placeholder="Special Defense..."/>
 
             <div class="<?php echo $speed_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'Speed' field
             </div>
-            <input class="add-field <?php echo $speed_field; ?>" type="text" name="speed" placeholder="Speed..."/>
+            <input class="add-field <?php echo $speed_field; ?>" type="text" value="<?php echo $speed; ?>" name="speed" placeholder="Speed..."/>
 
             <div class="<?php echo $gen_error; ?>">
-            Please enter a number above 0
+            Please enter a number above 0 in the 'Generation' field
             </div>
-            <input class="add-field <?php echo $gen_field; ?>" type="text" name="generation" placeholder="Generation..."/>
+            <input class="add-field <?php echo $gen_field; ?>" type="text" value="<?php echo $generation; ?>" name="generation" placeholder="Generation..."/>
             
             <br />
             <br />

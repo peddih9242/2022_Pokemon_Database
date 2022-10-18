@@ -251,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Pokemon Type 2 -->
             <div class="<?php echo $type_error_2; ?>">
-            Please select a valid type
+            Please select a valid type in the 'Pokemon Type 2' dropdown
             </div>
             <select class="adv <?php echo $type_field_2; ?>" name="poke_type_2ID">
             <?php
@@ -333,8 +333,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- defaults to 'no' -->
             <!-- NOTE: value in database is boolean, 1 is yes and 0 is no -->
             <b>Legendary: </b>
+            <?php 
+            if ($legendary == 1) {
+                ?>
+
+            <input type="radio" name="legendary" value="1" checked="checked"/>Yes
+            <input type="radio" name="legendary" value="0"/>No
+
+            <?php
+            }
+            
+            else {
+            ?>
+            
             <input type="radio" name="legendary" value="1"/>Yes
             <input type="radio" name="legendary" value="0" checked="checked"/>No
+            
+            <?php
+            }
+            
+            ?>
 
             <br />
             <br />

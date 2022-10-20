@@ -42,7 +42,7 @@
     
         <!-- logo / small image goes here -->
         <div class="box logo">
-            <a href="index.php"><img src="images/logo.png" width="261" height="150" alt="Dice" /></a>
+            <a href="index.php"><img src="images/pokeball.jpg" width="253" height="207" alt="pokeball" /></a>
         </div> <!-- / logo -->
         
         <div class="box banner">

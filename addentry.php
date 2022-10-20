@@ -31,34 +31,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $poke_type_1ID = mysqli_real_escape_string($dbconnect, $_POST['poke_type_1ID']);
-    if ($poke_type_1ID != "" && $poke_type_1ID != "0"){
+    $poke_type_2ID = mysqli_real_escape_string($dbconnect, $_POST['poke_type_2ID']);
+    if ($poke_type_1ID == "" || $poke_type_1ID == "0" || $poke_type_1ID == $poke_type_2ID) { 
+        $has_errors = "yes";
+        $type_error_1 = "error-text";
+        $type_field_1 = "form-error";
+    }    
+    else{
     $type_sql_1 = "SELECT * FROM `pokemon_type` WHERE `TypeID` = $poke_type_1ID
     ";
     $type_query_1 = mysqli_query($dbconnect, $type_sql_1);
     $type_rs_1 = mysqli_fetch_assoc($type_query_1);
     $poke_type_1 = $type_rs_1['Type'];
     }
-
-    elseif ($poke_type_1ID == "" || $poke_type_1ID == "0"){
-        $has_errors = "yes";
-        $type_error_1 = "error-text";
-        $type_field_1 = "form-error";
-    }
-
-
-    $poke_type_2ID = mysqli_real_escape_string($dbconnect, $_POST['poke_type_2ID']);
-    if ($poke_type_2ID != ""){
+    
+    if ($poke_type_2ID == "" || $poke_type_2ID == $poke_type_1ID){
+        $has_errors == "yes";
+        $type_error_2 = "error-text";
+        $type_field_2 = "form-error";
+    }    
+    else{
         $type_sql_2 = "SELECT * FROM `pokemon_type` WHERE `TypeID` = $poke_type_2ID
         ";
         $type_query_2 = mysqli_query($dbconnect, $type_sql_2);
         $type_rs_2 = mysqli_fetch_assoc($type_query_2);
         $poke_type_2 = $type_rs_2['Type'];
     }
-    else{
-        $has_errors == "yes";
-        $type_error_2 = "error-text";
-        $type_field_2 = "form-error";
-    }
+
 
     $hp = mysqli_real_escape_string($dbconnect, $_POST['hp']);
     if ($hp == ""){
@@ -214,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select class="adv <?php echo $type_field_1; ?>" name="poke_type_1ID">
             <?php 
             // display type normally if invalid input given
-            if ($poke_type_1ID == "" || $poke_type_1ID == "0") { 
+            if ($poke_type_1ID == "" || $poke_type_1ID == "0" || $poke_type_1ID == $poke_type_2ID) { 
                 ?>
                 <option value="" selected>Pokemon Type 1...</option>
             <?php
@@ -256,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select class="adv <?php echo $type_field_2; ?>" name="poke_type_2ID">
             <?php
             // display type normally if invalid input given
-            if ($poke_type_2ID == "") {
+            if ($poke_type_2ID == "" || $poke_type_2ID == $poke_type_1ID) {
             ?>
             <option value="" selected>Pokemon Type 2...</option>
             <?php

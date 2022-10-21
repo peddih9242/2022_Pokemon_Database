@@ -9,6 +9,7 @@
         ?>
 
         <div class="box main">
+        <h2>Legendary Search</h2>
 
         <?php include("results.php"); ?>
 

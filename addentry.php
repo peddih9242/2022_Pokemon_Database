@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['ID'] = $ID;
 
     // go to success page
-    // header('Location: add_success.php');
+    header('Location: add_success.php');
     }
 
 }

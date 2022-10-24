@@ -13,6 +13,7 @@
             <h3>Acknowledgements and Sources</h3>
             <ul>
                 <li><a href="https://www.kaggle.com/rounakbanik/pokemon">Original Pokemon Dataset</a></li>
+                <li><a href="https://pixabay.com/illustrations/pokemon-smartphone-pokemon-go-1593048/">Pokeball Logo Image</a></li>
             </ul>
 
 

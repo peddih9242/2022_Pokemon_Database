@@ -35,7 +35,8 @@
 
             <?php 
             
-            $type_1_sql = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
+            $type_1_sql = "SELECT * FROM `pokemon_type`
+            WHERE `TypeID` NOT LIKE '0' ORDER BY `Type` ASC
             ";
             $type_1_query = mysqli_query($dbconnect, $type_1_sql);
             $type_1_rs = mysqli_fetch_assoc($type_1_query);

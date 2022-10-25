@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
             <!-- Pokemon Type 1 -->
             <div class="<?php echo $type_error_1; ?>">
-                Please select a valid first type (Can't be N/A)
+                Please select a first type in the 'Pokemon Type 1' dropdown
             </div>
             <select class="adv <?php echo $type_field_1; ?>" name="poke_type_1ID">
             <?php 
@@ -231,7 +231,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <?php 
 
-            $type_sql_1 = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
+            $type_sql_1 = "SELECT * FROM `pokemon_type` WHERE
+            `TypeID` NOT LIKE '0' ORDER BY `Type` ASC
             ";
             $type_query_1 = mysqli_query($dbconnect, $type_sql_1);
             $type_rs_1 = mysqli_fetch_assoc($type_query_1);
@@ -250,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Pokemon Type 2 -->
             <div class="<?php echo $type_error_2; ?>">
-            Please select a valid type in the 'Pokemon Type 2' dropdown
+            Please select a second type in the 'Pokemon Type 2' dropdown
             </div>
             <select class="adv <?php echo $type_field_2; ?>" name="poke_type_2ID">
             <?php
@@ -273,7 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <?php 
 
-            $type_sql_2 = "SELECT * FROM `pokemon_type` ORDER BY `TypeID` ASC
+            $type_sql_2 = "SELECT * FROM `pokemon_type` ORDER BY `Type` ASC
             ";
             $type_query_2 = mysqli_query($dbconnect, $type_sql_2);
             $type_rs_2 = mysqli_fetch_assoc($type_query_2);

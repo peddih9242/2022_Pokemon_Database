@@ -102,6 +102,10 @@ h1, h2, h3, h4 {
     font-family: 'Ubuntu', sans-serif;
 }
 
+h1 {
+    color: #ffffff;
+}
+
 .sub_heading {
     font-family: 'Ubuntu', sans-serif;
     color: #593849;
